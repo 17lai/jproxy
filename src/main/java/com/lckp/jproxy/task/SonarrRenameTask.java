@@ -1,16 +1,13 @@
 package com.lckp.jproxy.task;
 
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import com.lckp.jproxy.constant.*;
+import com.lckp.jproxy.entity.SonarrRule;
+import com.lckp.jproxy.service.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,24 +15,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import com.lckp.jproxy.constant.ApiField;
-import com.lckp.jproxy.constant.Common;
-import com.lckp.jproxy.constant.Downloader;
-import com.lckp.jproxy.constant.Messages;
-import com.lckp.jproxy.constant.SystemConfigKey;
-import com.lckp.jproxy.constant.Token;
-import com.lckp.jproxy.entity.SonarrRule;
-import com.lckp.jproxy.service.IQbittorrentService;
-import com.lckp.jproxy.service.ISonarrRuleService;
-import com.lckp.jproxy.service.ISonarrTitleService;
-import com.lckp.jproxy.service.ISystemConfigService;
-import com.lckp.jproxy.service.ITransmissionService;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -147,7 +132,7 @@ public class SonarrRenameTask {
 													newFileName = oldFileName;
 												} else {
 													if (extension.matches(Common.SUBTITLE_EXTENSION_REGEX)) {
-														newFileName = newFileName + "." + subtitleNo++;
+														extension = "." + subtitleNo++ + extension;
 													}
 													int index = sourceTitle.indexOf(" [");
 													newFileName = newFileName
