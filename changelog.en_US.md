@@ -3,6 +3,10 @@
 
 # Change Logs
 
+## v3.4.8 2025-08-13
+
+🚀 File rename optimization
+
 ## v3.4.7 2025-07-18
 
 👻 Fix formatting exception when title contains line breaks
